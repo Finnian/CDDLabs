@@ -1,0 +1,16 @@
+#Finnian 07/02/19
+#First simple Makefile
+#Used to contain commands to compile projects
+#Equivalent(?) to a project file in VStudio -- only better!
+#See http://www.cs.colby.edu/maxwell/courses/tutorials/maketutor/ for info.
+
+
+CC=g++
+CFLAGS= -std=c++11 -pthread
+
+SIMPLE: main.cpp
+	g++ -std=c++11 -pthread main.cpp Semaphore.cpp SafeBuffer.cpp Event.cpp
+
+
+CLEAN:
+	rm *.o

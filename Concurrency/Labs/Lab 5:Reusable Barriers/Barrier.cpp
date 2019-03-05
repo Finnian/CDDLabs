@@ -2,13 +2,13 @@
 // 
 // Filename: Barrier.cpp
 // Description: 
-// Author: Joseph
+// Author: Finnian Fanning
 // Maintainer: 
-// Created: Tue Jan  8 12:14:02 2019 (+0000)
+// Created: Tue 5 March 17:15:02 2019 (+0000)
 // Version: 
 // Package-Requires: ()
 // Last-Updated: Tue Jan  8 12:15:21 2019 (+0000)
-//           By: Joseph
+//           By: Finnian
 //     Update #: 2
 // URL: 
 // Doc URL: 
@@ -46,7 +46,42 @@
 // Code:
 #include "Semaphore.h"
 #include "Barrier.h"
+#include <iostream>
 
+Barrier::~Barrier(){}
 
+Barrier::Barrier(int numThreads)
+{
+  this->numThreads = numThreads;
+  std::shared_ptr<Semaphore> turnstile( new Semaphore(0));
+  std::shared_ptr<Semaphore> turnstile2( new Semaphore(1));
+  std::shared_ptr<Semaphore> mutex ( new Semaphore(1));
+}
+
+void Barrier::wait()
+{
+  mutex->Wait();
+  count++;
+  
+  if(count == numThreads) 
+  {
+    turnstile2->Wait();
+    turnstile->Signal();
+  }
+  mutex->Signal(); 
+  turnstile->Wait();
+  turnstile->Signal();
+  mutex->Wait();
+  count--;
+  if(count == 0) 
+  {
+    turnstile->Wait();
+    turnstile2->Signal();
+  }
+
+  mutex->Signal();
+  turnstile2->Wait();
+  turnstile2->Signal();
+}
 // 
 // Barrier.cpp ends here

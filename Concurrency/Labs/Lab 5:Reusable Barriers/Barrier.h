@@ -2,13 +2,13 @@
  * 
  * Filename: Barrier.h
  * Description: 
- * Author: Joseph
+ * Author: Finnian
  * Maintainer: 
- * Created: Tue Jan  8 12:12:03 2019 (+0000)
+ * Created: Tue 5 March 17:15:02 2019 (+0000)
  * Version: 
  * Package-Requires: ()
- * Last-Updated: Tue Jan  8 12:15:54 2019 (+0000)
- *           By: Joseph
+ * Last-Updated: Tue 5 March 17:15:02 2019 (+0000)
+ *           By: Finnian
  *     Update #: 2
  * URL: 
  * Doc URL: 
@@ -43,9 +43,17 @@
  */
 
 /* Code: */
+#include "Semaphore.h"
 #pragma once
+
 class Barrier{
   int numThreads;
+  int count = 0;
+
+  std::shared_ptr<Semaphore> mutex;
+  std::shared_ptr<Semaphore> turnstile;
+  std::shared_ptr<Semaphore> turnstile2;
+   
  public:
   Barrier(int numThreads);
   virtual ~Barrier();
